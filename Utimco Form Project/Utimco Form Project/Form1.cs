@@ -20,6 +20,35 @@ namespace Utimco_Form_Project
             InitializeComponent();
         }
 
+        public static List<RootObject> calculateTotals(List<RootObject> menus)
+        {
+                foreach (var menu in menus)
+                {
+                    var total = 0;
+                    foreach (var item in menu.menu.items)
+                    {
+                        if (item != null && item.label != null)
+                        {
+                            total += item.id;
+                        }
+
+                    }
+                    menu.menu.sum = total;
+                }
+                return menus;
+        }
+
+        public static string retrieveFile(string location)
+        {
+            var fileStream = new FileStream(location, FileMode.Open, FileAccess.Read);
+            string fileText;
+            using (var streamReader = new StreamReader(fileStream, Encoding.UTF8))
+            {
+                fileText = streamReader.ReadToEnd();
+            }
+            return fileText;
+        }
+
         public class Item
         {
             public int id { get; set; }
@@ -43,8 +72,10 @@ namespace Utimco_Form_Project
 
         private void button1_Click(object sender, EventArgs e)
         {
+            textBox2.Text = "";
             string fileText;
             string fileLocation;
+            List<RootObject> menus;
             if (textBox1.Text != "")
             {
                 ofd.InitialDirectory = textBox1.Text;
@@ -54,29 +85,37 @@ namespace Utimco_Form_Project
             {
                 textBox1.Text = ofd.FileName;
                 fileLocation = ofd.FileName;
-                var fileStream = new FileStream(fileLocation, FileMode.Open, FileAccess.Read);
-                using (var streamReader = new StreamReader(fileStream, Encoding.UTF8))
+                /*try
                 {
-                    fileText = streamReader.ReadToEnd();
-                    var stuff = JsonConvert.DeserializeObject<List<RootObject>>(fileText);
-                    foreach (var menu in stuff)
-                    {
-                        var total = 0;
-                        foreach (var item in menu.menu.items)
-                        {
-                            if (item != null && item.label != null)
-                            {
-                                total += item.id;
-                            }
-
-                        }
-                        menu.menu.sum = total;
-                    }
+                    fileText = retrieveFile(fileLocation);
+                }
+                catch
+                {
+                    textBox2.Text = "There was an error with the file location";
+                }*/
+                fileText = retrieveFile(fileLocation);
+                /*try
+                {
+                    menus = calculateTotals(JsonConvert.DeserializeObject<List<RootObject>>(fileText));
+                }
+                catch
+                {
+                    textBox2.Text = "There was an error parsing the json";
+                }*/
+                menus = calculateTotals(JsonConvert.DeserializeObject<List<RootObject>>(fileText));
+                foreach (var menu in menus)
+                {
+                    textBox2.Text += menu.menu.sum.ToString() + " \r\n";
                 }
             }
         }
 
         private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox2_TextChanged(object sender, EventArgs e)
         {
 
         }

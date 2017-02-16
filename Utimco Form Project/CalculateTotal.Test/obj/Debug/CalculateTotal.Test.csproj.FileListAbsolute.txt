@@ -1,0 +1,13 @@
+D:\GitHub\parsing_json\Utimco Form Project\CalculateTotal.Test\obj\Debug\CalculateTotal.Test.csprojResolveAssemblyReference.cache
+D:\GitHub\parsing_json\Utimco Form Project\CalculateTotal.Test\bin\Debug\CalculateTotal.Test.dll.config
+D:\GitHub\parsing_json\Utimco Form Project\CalculateTotal.Test\bin\Debug\CalculateTotal.Test.dll
+D:\GitHub\parsing_json\Utimco Form Project\CalculateTotal.Test\bin\Debug\CalculateTotal.Test.pdb
+D:\GitHub\parsing_json\Utimco Form Project\CalculateTotal.Test\bin\Debug\EntityFramework.dll
+D:\GitHub\parsing_json\Utimco Form Project\CalculateTotal.Test\bin\Debug\Microsoft.VisualStudio.QualityTools.UnitTestFramework.dll
+D:\GitHub\parsing_json\Utimco Form Project\CalculateTotal.Test\bin\Debug\Newtonsoft.Json.dll
+D:\GitHub\parsing_json\Utimco Form Project\CalculateTotal.Test\bin\Debug\Utimco Form Project.exe
+D:\GitHub\parsing_json\Utimco Form Project\CalculateTotal.Test\bin\Debug\Utimco Form Project.pdb
+D:\GitHub\parsing_json\Utimco Form Project\CalculateTotal.Test\bin\Debug\EntityFramework.xml
+D:\GitHub\parsing_json\Utimco Form Project\CalculateTotal.Test\bin\Debug\Newtonsoft.Json.xml
+D:\GitHub\parsing_json\Utimco Form Project\CalculateTotal.Test\obj\Debug\CalculateTotal.Test.dll
+D:\GitHub\parsing_json\Utimco Form Project\CalculateTotal.Test\obj\Debug\CalculateTotal.Test.pdb
