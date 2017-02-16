@@ -20,14 +20,32 @@ namespace Utimco_Form_Project
             InitializeComponent();
         }
 
+        public class Item
+        {
+            public int id { get; set; }
+            public string label { get; set; }
+        }
+
+        public class Menu
+        {
+            public string header { get; set; }
+            public List<Item> items { get; set; }
+            public int sum { get; set; }
+        }
+
+        public class RootObject
+        {
+            public Menu menu { get; set; }
+
+        }
+
         OpenFileDialog ofd = new OpenFileDialog();
 
         private void button1_Click(object sender, EventArgs e)
         {
             string fileText;
             string fileLocation;
-            var str = "{ hello: 'world', places: ['Africa', 'America', 'Asia', 'Australia'] }";
-            if (textBox1.Text !="")
+            if (textBox1.Text != "")
             {
                 ofd.InitialDirectory = textBox1.Text;
             }
@@ -40,18 +58,19 @@ namespace Utimco_Form_Project
                 using (var streamReader = new StreamReader(fileStream, Encoding.UTF8))
                 {
                     fileText = streamReader.ReadToEnd();
-                    var json = JsonConvert.DeserializeObject(fileText);
-                    var jsonObject = JArray.Parse(json.ToString());
-                    foreach (JToken child in jsonObject.Children())
+                    var stuff = JsonConvert.DeserializeObject<List<RootObject>>(fileText);
+                    foreach (var menu in stuff)
                     {
-                        string test = (string)jsonObject.SelectToken("menu.items");
-                        /*foreach (JToken a in child.Children())
+                        var total = 0;
+                        foreach (var item in menu.menu.items)
                         {
-                            foreach (JToken b in a.Children())
+                            if (item != null && item.label != null)
                             {
-                                    string menu = (string)b.SelectToken("menu[0].items");
+                                total += item.id;
                             }
-                        }*/
+
+                        }
+                        menu.menu.sum = total;
                     }
                 }
             }
