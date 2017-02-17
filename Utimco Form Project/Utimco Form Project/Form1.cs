@@ -20,8 +20,11 @@ namespace Utimco_Form_Project
             InitializeComponent();
         }
 
+        //Calculate Total based off of labels
         public static List<RootObject> calculateTotals(List<RootObject> menus)
         {
+            try
+            {
                 foreach (var menu in menus)
                 {
                     var total = 0;
@@ -36,8 +39,18 @@ namespace Utimco_Form_Project
                     menu.menu.sum = total;
                 }
                 return menus;
+            }
+            catch
+            {
+                foreach (var menu in menus)
+                {
+                    menu.error = "There was an error parsing for menu items";
+                }
+                return menus;
+            }
         }
 
+        //retrieve the selected file
         public static string retrieveFile(string location)
         {
             var fileStream = new FileStream(location, FileMode.Open, FileAccess.Read);
@@ -65,6 +78,7 @@ namespace Utimco_Form_Project
         public class RootObject
         {
             public Menu menu { get; set; }
+            public string error { get; set; }
 
         }
 
@@ -85,27 +99,30 @@ namespace Utimco_Form_Project
             {
                 textBox1.Text = ofd.FileName;
                 fileLocation = ofd.FileName;
-                /*try
+                try
                 {
                     fileText = retrieveFile(fileLocation);
-                }
-                catch
-                {
-                    textBox2.Text = "There was an error with the file location";
-                }*/
-                fileText = retrieveFile(fileLocation);
-                /*try
-                {
                     menus = calculateTotals(JsonConvert.DeserializeObject<List<RootObject>>(fileText));
+                    foreach (var menu in menus)
+                    {
+                        if (menu.error != "")
+                        {
+                            textBox2.Text += menu.menu.sum.ToString() + " \r\n";
+                        }
+                        else
+                            textBox2.Text = menu.error;
+                    }
                 }
-                catch
+                catch(Exception ex)
                 {
-                    textBox2.Text = "There was an error parsing the json";
-                }*/
-                menus = calculateTotals(JsonConvert.DeserializeObject<List<RootObject>>(fileText));
-                foreach (var menu in menus)
-                {
-                    textBox2.Text += menu.menu.sum.ToString() + " \r\n";
+                    if(ex is JsonReaderException)
+                    {
+                        textBox2.Text = "There was an error deserializing";
+                    }
+                    else
+                    {
+                        textBox2.Text = "There was an error";
+                    }
                 }
             }
         }

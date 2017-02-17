@@ -30,13 +30,13 @@ namespace CalculateTotal.Test
             // Arrange
             List<Utimco_Form_Project.Form1.RootObject> menus;
             string totals = "";
+            string fileText = "";
 
             //Act
 
-            string fileText = Utimco_Form_Project.Form1.retrieveFile(new DirectoryInfo(Environment.CurrentDirectory)
+            fileText = Utimco_Form_Project.Form1.retrieveFile(new DirectoryInfo(Environment.CurrentDirectory)
                 .Parent
                 .Parent.FullName + "//jsonTest.txt");
-                //.GetDirectories().First(d => d.Name == "CalculateTotal").FullName + "\\jsonTest.txt");
             menus = Utimco_Form_Project.Form1.calculateTotals(JsonConvert.DeserializeObject<List<Utimco_Form_Project.Form1.RootObject>>(fileText));
             foreach (var menu in menus)
             {
