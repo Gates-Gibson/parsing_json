@@ -20,6 +20,48 @@ namespace Utimco_Form_Project
             InitializeComponent();
         }
 
+        //Calculate Total based off of labels
+        public static List<RootObject> calculateTotals(List<RootObject> menus)
+        {
+            try
+            {
+                foreach (var menu in menus)
+                {
+                    var total = 0;
+                    foreach (var item in menu.menu.items)
+                    {
+                        if (item != null && item.label != null)
+                        {
+                            total += item.id;
+                        }
+
+                    }
+                    menu.menu.sum = total;
+                }
+                return menus;
+            }
+            catch
+            {
+                foreach (var menu in menus)
+                {
+                    menu.error = "There was an error parsing for menu items";
+                }
+                return menus;
+            }
+        }
+
+        //retrieve the selected file
+        public static string retrieveFile(string location)
+        {
+            var fileStream = new FileStream(location, FileMode.Open, FileAccess.Read);
+            string fileText;
+            using (var streamReader = new StreamReader(fileStream, Encoding.UTF8))
+            {
+                fileText = streamReader.ReadToEnd();
+            }
+            return fileText;
+        }
+
         public class Item
         {
             public int id { get; set; }
@@ -36,6 +78,7 @@ namespace Utimco_Form_Project
         public class RootObject
         {
             public Menu menu { get; set; }
+            public string error { get; set; }
 
         }
 
@@ -43,8 +86,10 @@ namespace Utimco_Form_Project
 
         private void button1_Click(object sender, EventArgs e)
         {
+            textBox2.Text = "";
             string fileText;
             string fileLocation;
+            List<RootObject> menus;
             if (textBox1.Text != "")
             {
                 ofd.InitialDirectory = textBox1.Text;
@@ -54,29 +99,40 @@ namespace Utimco_Form_Project
             {
                 textBox1.Text = ofd.FileName;
                 fileLocation = ofd.FileName;
-                var fileStream = new FileStream(fileLocation, FileMode.Open, FileAccess.Read);
-                using (var streamReader = new StreamReader(fileStream, Encoding.UTF8))
+                try
                 {
-                    fileText = streamReader.ReadToEnd();
-                    var stuff = JsonConvert.DeserializeObject<List<RootObject>>(fileText);
-                    foreach (var menu in stuff)
+                    fileText = retrieveFile(fileLocation);
+                    menus = calculateTotals(JsonConvert.DeserializeObject<List<RootObject>>(fileText));
+                    foreach (var menu in menus)
                     {
-                        var total = 0;
-                        foreach (var item in menu.menu.items)
+                        if (menu.error != "")
                         {
-                            if (item != null && item.label != null)
-                            {
-                                total += item.id;
-                            }
-
+                            textBox2.Text += menu.menu.sum.ToString() + " \r\n";
                         }
-                        menu.menu.sum = total;
+                        else
+                            textBox2.Text = menu.error;
+                    }
+                }
+                catch(Exception ex)
+                {
+                    if(ex is JsonReaderException)
+                    {
+                        textBox2.Text = "There was an error deserializing";
+                    }
+                    else
+                    {
+                        textBox2.Text = "There was an error";
                     }
                 }
             }
         }
 
         private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox2_TextChanged(object sender, EventArgs e)
         {
 
         }
